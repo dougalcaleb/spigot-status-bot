@@ -24,7 +24,7 @@ Because I do not own the hardware to host this bot on multiple servers at a time
 Verify that your bot can be added to your server. To get the bot up and running:
 - Extract the code from ```src/bot``` to the hardware you want to run it from.
 - Place your token in the appropriate place in the file ```token.js```.
-- Configure your settings in ```config.js```. (See [settings](#settings))
+- Configure your settings in ```config.json```, and in your Discord server. (See [settings](#settings))
 - Use ```npm start``` or ```node server.js``` to run your server. 
 
 If you have done this correctly, you should see your bot's status on Discord change to "online" and a message should be sent in the supplied channel that shows your Minecraft server is currently offline, with an unknown last online time.
@@ -46,39 +46,24 @@ You are free to expand upon and modify the software provided, as detailed in the
 # Settings
 ### Discord bot:
 
-- spigotServerAddress: Either the IPv4 address or web URL of the Spigot server (string)
+Setting | Type | Description
+--------|------|------------
+spigotServerAddress | string | Web address of the Spigot server
+spigotServerPort | number | Port that the Spigot server is running on
+verifyStatus | boolean | Toggles whether the bot will ping the Spigot server to verify that it is online or offline<br/> <details><summary>Expand description</summary>This option helps to verify that the server continues to run. In the event that the server encounters a catastrophic error (such as network failure or the computer shutting off), the update that the server has shut down will not be sent successfully. Regular verifications will ensure that an incorrect status is not being displayed. <br/><br/>If your server's port cannot be pinged, for security reasons or otherwise, disable this option.</details>
+verifyInterval | number | The amount of time (in seconds) between verification pings to the server
+verifyTimeout | number | The timeout (in millliseconds) that the bot will wait until a ping is considered unsuccessful
+botChannel | string | The ID of the Discord channel that the bot should post its message to <br/> <details><summary>Expand description</summary>To get the ID, enable Discord's Developer Mode, then right click channel > "Copy ID"<br/><br/>Ensure that only the bot can send messages to this channnel  </details>
+useWebhook | boolean | Sets the method used to recieve data from the Spigot server <br/><details><summary>Expand description</summary>- true: uses the Discord webhook <br/> - false: uses an integrated webserver <br/><br/>When using the webhook, you will need to set up a new private Discord channel for the webhook to send data to. <br/> - Create the channel and give view permissions only to the bot. Ensure nobody can send messages in the channel <br/> - Under the channel settings, click Integrations > Create Webhook. Configure the webhook as you see fit. Click Copy Webhook URL and save it. You will need it later for the plugin. <br/><br/> Only use the webserver method when you have a static web address that can be dedicated to the bot. The webserver cuts out the middleman of needing a dedicated Discord channel to send updates to, and instead sends POST requests directly to the bot.</details>
+webhookChannel | string | The ID of the channel that the Spigot server will send updates to (if using the webhook method)
+webserverPort | number | When using the webserver instead of a Discord webhook, the bot will open up this port for POST requests from your Spigot server
 
-- spigotServerPort: The port that the Spigot server is running on (number)
-
-- verifyStatus: Toggles whether the bot will ping your server to verify that it is online or offline.
-   - This option helps to verify that the server continues to run. In the event that the server encounters a catastrophic error (such as network failure or the computer shutting off), the update that the server has shut down will not be sent successfully. Regular verifications will ensure that an incorrect status is not being displayed.
-   - If your server's port cannot be pinged, for security reasons or otherwise, disable this option.
-
-- verifyInterval: The amount of time (in seconds) between verification pings to your Spigot server
-
-- verifyTimeout: The timeout (in milliseconds) that the bot will wait until a ping is considered unsuccessful
-
-- botChannel: The ID of the channel that the Bot should post its message to (string)
-   - Enable Discord's Developer Mode > right click channel > "Copy ID"
-   - Ensure that only the bot can send messages to this channnel  
-
-- useWebhook: Sets the method used to recieve data from the server (boolean)
-   -  When set to true, the webhook method is used
-      - You will need to set up a seperate private channel in your Discord server. Only give view permissions to the bot. Mute this channel, there will be a lot of messages
-      - Under the channel settings, click Integrations > Create Webhook. Configure your webhook as you see fit, then click Copy Webhook URL and save it. You will need this later for the plugin portion
-      - Ensure nobody can send messages in this channel
-   - When set to false, a webserver will run instead
-      - This cuts out the middleman of having to post updates to a channel in your Discord server, and instead posts them directly to your Discord bot
-      - This can ONLY be used reliably when your bot can be run on a static IP address or web URL
-
-- webhookChannel: The ID of the channel that the Spigot server's webhook will send messages to
-
-- webserverPort: When using the webserver instead of a Discord webhook, the bot will open up this port for POST requests from your Spigot server
 <br/>
 <br/>
 
 ### Plugin:
 
-- url: The URL of the Discord channel webhook or the address/URL of the Discord bot's webserver
-
-- reportRate: The amount of time (in seconds) between sending server health updates to the bot
+Setting | Type | Description
+--------|------|------------
+url | string | The URL of the Discord channel webhook or of the Discord bot's webserver
+reportRate | number | The amount of time (in seconds) between sending server health updates to the bot
