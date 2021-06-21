@@ -47,26 +47,21 @@ You are free to expand upon and modify the software provided, as detailed in the
 ### Discord bot:
 
 - spigotServerAddress: Either the IPv4 address or web URL of the Spigot server (string)
-<br/>
-<br/>
+
 - spigotServerPort: The port that the Spigot server is running on (number)
-<br/>
-<br/>
+
 - verifyStatus: Toggles whether the bot will ping your server to verify that it is online or offline.
    - This option helps to verify that the server continues to run. In the event that the server encounters a catastrophic error (such as network failure or the computer shutting off), the update that the server has shut down will not be sent successfully. Regular verifications will ensure that an incorrect status is not being displayed.
    - If your server's port cannot be pinged, for security reasons or otherwise, disable this option.
-<br/>
-<br/>
+
 - verifyInterval: The amount of time (in seconds) between verification pings to your Spigot server
-<br/>
-<br/>
+
 - verifyTimeout: The timeout (in milliseconds) that the bot will wait until a ping is considered unsuccessful
-<br/>
-<br/>
+
 - botChannel: The ID of the channel that the Bot should post its message to (string)
    - Enable Discord's Developer Mode > right click channel > "Copy ID"
    - Ensure that only the bot can send messages to this channnel  
-<br/>
+
 - useWebhook: Sets the method used to recieve data from the server (boolean)
    -  When set to true, the webhook method is used
       - You will need to set up a seperate private channel in your Discord server. Only give view permissions to the bot. Mute this channel, there will be a lot of messages
@@ -75,18 +70,15 @@ You are free to expand upon and modify the software provided, as detailed in the
    - When set to false, a webserver will run instead
       - This cuts out the middleman of having to post updates to a channel in your Discord server, and instead posts them directly to your Discord bot
       - This can ONLY be used reliably when your bot can be run on a static IP address or web URL
-<br/>
-<br/>
+
 - webhookChannel: The ID of the channel that the Spigot server's webhook will send messages to
-<br/><br/>
+
 - webserverPort: When using the webserver instead of a Discord webhook, the bot will open up this port for POST requests from your Spigot server
-<br/>
 <br/>
 <br/>
 
 ### Plugin:
 
 - url: The URL of the Discord channel webhook or the address/URL of the Discord bot's webserver
-<br/>
-<br/>
+
 - reportRate: The amount of time (in seconds) between sending server health updates to the bot
