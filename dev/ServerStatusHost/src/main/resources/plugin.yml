@@ -1,0 +1,16 @@
+  name: ServerStatusHost
+  main: io.github.dougalcaleb.serverstatushost.ServerStatusHost
+  version: 0.1.0
+  api-version: 1.16
+  description: Hooks into the server to provide statistics and actions to a Discord bot
+  author: Caleb Dougal
+  website: dougalcaleb.github.io
+  commands:
+    statushost:
+      usage: "Usage: /statushost [requestrestart | health]"
+      permission-message: "You do not have permission to use this command."
+      permission: user.basic
+  permissions:
+    user.basic:
+      description: Allows for statushost usage
+      default: true
