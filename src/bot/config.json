@@ -1,0 +1,12 @@
+{
+   "serverName": "",
+   "thumbnail": "",
+   "serverAddress": "",
+   "serverPort": 25565,
+   "verifyStatus": true,
+   "verifyInterval": 30,
+   "verificationTimeout": 3,
+   "botChannel": "",
+   "webhookChannel": "",
+   "botToken": ""
+}
