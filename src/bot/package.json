@@ -1,11 +1,11 @@
 {
   "name": "spigotstatusdiscordbot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "bot.js",
   "author": "Caleb Dougal",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "12.5.3"
+    "discord.js": "^14.16.3"
   }
 }

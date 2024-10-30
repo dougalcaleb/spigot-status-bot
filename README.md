@@ -1,7 +1,7 @@
 # Spigot Status Bot
 A Discord bot to help you keep tabs on your Spigot-based Minecraft server.
 
-Tested on Spigot and PaperMC 1.17.1
+Tested on PaperMC 1.21.1
 
 Features:
 - Shows online status
@@ -9,16 +9,20 @@ Features:
 - Displays ticks per second and memory usage
 - Displays online players
 - Clean embed message format
+- Can be used either on the same machine as the Minecraft server, or another machine
 
 # Setup
 Because I do not own the hardware to host this bot on multiple servers at a time, you will need to register your own Discord bot. However, this is very simple to do:
 - Go to the [Discord Developer Portal](https://discord.com/developers/docs/intro).
 - On the left side, go to Applications and click New Application at the top right. Walk through the steps to create your bot.
+	- Under OAuth2, select the `bot` scope and enable the permissions `View Channels`, `Send Messages`, and `Manage Messages`.
+	- Under Bot, enable `Message Content Intent`
 - Once your bot is created, copy and save your bot's Token (but be careful to keep it secret and secure).
+- Invite your bot to your Discord server.
 
-Verify that your bot can be added to your Discord server. To get the bot up and running:
+To get the bot up and running:
 - Extract the code from ```src/bot``` to the hardware you want to run it from.
-- Place your token in the appropriate place in the config file.
+- Place your token in the appropriate place in the token config file.
 - Configure your settings in the config file and in your Discord server. (See [settings](#settings))
 - Use ```node bot.js``` in the terminal to run the bot. 
 
@@ -39,16 +43,14 @@ You are free to expand upon and modify the software provided, as detailed in the
 
 Setting | Type | Description
 --------|------|------------
-serverName | string | The name of the server that the Discord bot will display as its status
-thumbnail | string | URL of an image to use for the embed's thumbnail
-serverAddress | string | Web address of the Minecraft server
+serverName | string | The name of the server that the Discord bot will display as its Rich Presence status
+serverAddress | string | Web address of the Minecraft server. Enter this ONLY if the Discord bot is running on a different machine than the Minecraft server is running.
 serverPort | number | Port that the Minecraft server is running on
-verifyStatus | boolean | Toggles whether the bot will ping the Spigot server to verify that it is online or offline<br/> <details><summary>Expand description</summary><br/>This option helps to verify that the server continues to run. In the event that the server encounters a catastrophic error (such as network failure or the computer shutting off), the update that the server has shut down will not be sent successfully. Regular verifications will ensure that an incorrect status is not being displayed. <br/><br/>If your server's port cannot be pinged, for security reasons or otherwise, disable this option.</details>
+verifyStatus | boolean | Toggles whether the bot will ping the Spigot server to verify that it is online or offline<br/> <details><summary>Expand description</summary><br/>This option helps to verify that the server continues to run. In the event that the server encounters a catastrophic error (such as network failure or the computer shutting off), the update that the server has shut down will not be sent successfully. Regular verifications will ensure that an incorrect status is not being displayed. If the bot and server are on the same machine, this may be less useful.<br/><br/>If your server's port cannot be pinged, for security reasons or otherwise, disable this option.</details>
 verifyInterval | number | The amount of time (in seconds) between verification pings to the server
 verificationTimeout | number | The timeout (in seconds) that the bot will wait until a ping is considered unsuccessful
 botChannel | string | The ID of the Discord channel that the bot should post its message to <br/> <details><summary>Expand description</summary><br/>Ensure that only the bot can send messages to this channnel. Other messages will break the bot.<br/><br/>To get the ID, enable Discord's Developer Mode, then right click channel > "Copy ID".</details>
 webhookChannel | string | The ID of the channel that the Minecraft server will send updates to
-botToken | string | Your Discord bot's login token
 
 <br/>
 <br/>
