@@ -98,6 +98,7 @@ BotClient.on(Events.MessageCreate, (message) => {
 			server.online = true;
 			player = Utility.parsePlayerName(command[1]);
 			server.players.push(player);
+			server.players = [...new Set(server.players)];
 			break;
 		case "PLAYER_LEAVE":
 			server.lastOnline = new Date().toISOString();
@@ -156,7 +157,7 @@ class Utility {
 			});
 			lines.push({
 			    name: "IP address:",
-			    value: Utility.getIPAddress() + ":25565",
+			    value: Utility.getIPAddress() + ":" + config.serverPort,
 			});
 		} else {
 			lines.push({
@@ -165,7 +166,7 @@ class Utility {
 			});
 			lines.push({
 			    name: "IP address:",
-			    value: Utility.getIPAddress() + ":25565",
+			    value: Utility.getIPAddress() + ":" + config.serverPort,
 			});
 		}
 
