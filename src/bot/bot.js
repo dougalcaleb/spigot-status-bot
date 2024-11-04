@@ -4,6 +4,7 @@ const Filesystem = require("fs");
 const config = JSON.parse(Filesystem.readFileSync("./config.json", "utf-8"));
 const token = JSON.parse(Filesystem.readFileSync("./token.json", "utf-8"))
 const os = require('os');
+const { exec } = require('child_process');
 
 
 let outputs = { status: null, errors: null };
@@ -15,6 +16,7 @@ let server = {
 	health: [],
 	message: [],
 	msgChannel: null,
+	cmdChannel: null,
 	errors: [],
 	verifiedAt: new Date().toISOString(),
 };
@@ -41,6 +43,9 @@ BotClient.once(Events.ClientReady, (readyClient) => {
 
 	// Get correct channel
 	server.msgChannel = BotClient.channels.cache.get(config.botChannel);
+	if (config.commandChannel) {
+		server.cmdChannel = BotClient.channels.cache.get(config.commandChannel);
+	}
 
 	// Hook existing message
 	Utility.fetchBotMessage((msg) => {
@@ -70,9 +75,18 @@ BotClient.once(Events.ClientReady, (readyClient) => {
 
 // React to input
 BotClient.on(Events.MessageCreate, (message) => {
-	// Only get messages from the correct channel
-	if (message.channel.id != config.webhookChannel) return;
+	// Ignore messages sent by the bot itself
+	if (message.author.id === BotClient.user.id) return;
+	
+	if (message.channel.id === config.webhookChannel) {
+		handleHealthReport(message);
+		Utility.message();
+	} else if (message.channel.id === config.commandChannel) {
+		handleRconInput(message);
+	}
+});
 
+function handleHealthReport(message) {
 	let command = message.content.split("|");
 
 	server.verifiedAt = new Date().toISOString();
@@ -124,9 +138,63 @@ BotClient.on(Events.MessageCreate, (message) => {
 		default:
 			console.log("Invalid operator: " + command[0]);
 	}
+}
 
-	Utility.message();
-});
+function handleRconInput(message) {
+    const serverAddress = config.serverAddress || Utility.getIPAddress();
+	exec(`mcrcon -H ${serverAddress} -P ${config.rconPort} -p ${config.rconPassword} "${message.content}"`, (error, stdout, stderr) => {
+		let embedData = {
+			color: (error || stderr) ? intConfig.errorColor : intConfig.onlineColor,
+			title: (error || stderr) ? "Error" : "Success",
+			fields: null,
+			timestamp: new Date().toISOString(),
+		}
+
+		if (error) {
+			console.log("Error executing command");
+			embedData.fields = [
+				{
+					name: "error",
+					value: JSON.stringify(error).substring(0, 1000), // Discord's API has a limit of 1024 characters
+				}
+			];
+		} else if (stderr) {
+			console.log("Command failed");
+			embedData.fields = [
+				{
+					name: "stderr",
+					value: JSON.stringify(stderr).substring(0, 1000),
+				}
+			];
+		} else if (stdout) {
+			console.log("Command successful");
+			embedData.fields = [
+				{
+					name: "stdout",
+					value: JSON.stringify(stdout).substring(0, 1000),
+				}
+			];
+		} else {
+			console.log("Command success indeterminate");
+			embedData.fields = [
+				{
+					name: "No output",
+					value: "No output to display",
+				}
+			];
+		}
+
+		server.cmdChannel
+			.send({ embeds: [embedData] })
+			.catch((error) => {
+				console.log("Command channel message send failed");
+				console.log(error);
+				Utility.error(error);
+			});
+	});
+}
+
+
 
 // Common functions
 class Utility {
@@ -211,6 +279,10 @@ class Utility {
 		}
 	}
 
+
+	static commandOutput(message) {
+
+	}
 	// Send an error message
 	static error(e) {
 		let str = `HTTP Status: ${e.httpStatus} Code: ${e.code} Path: ${e.path}`;

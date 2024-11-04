@@ -6,5 +6,8 @@
    "verifyInterval": 30,
    "verificationTimeout": 3,
    "botChannel": "",
-   "webhookChannel": ""
+   "webhookChannel": "",
+   "commandChannel": "",
+   "rconPort": 25575,
+   "rconPassword": ""
 }

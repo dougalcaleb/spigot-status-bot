@@ -10,6 +10,7 @@ Features:
 - Displays online players
 - Clean embed message format
 - Can be used either on the same machine as the Minecraft server, or another machine
+- Use RCON to send commands in Discord that are then executed on the server
 
 # Setup
 Because I do not own the hardware to host this bot on multiple servers at a time, you will need to register your own Discord bot. However, this is very simple to do:
@@ -36,6 +37,13 @@ Next, add the plugin to your Minecraft server:
 
 Congratulations, your Discord bot is ready for use.
 
+To use the RCON functionality:
+- Download and install [MCRCON](https://github.com/Tiiffi/mcrcon) on the same machine as the Minecraft server
+- Create a new channel in your Discord server for executing commands. Copy the Channel ID into `commandChannel` in the config file.
+	- NOTE: THERE IS NO SANITIZATION / VALIDATION / AUTHENTICATION IN THIS PROJECT'S CURRENT STATE. ONLY ALLOW TRUSTED INPUT. UNTRUSTED INPUT COULD EASILY LEAD TO REMOTE COMMAND EXECUTION OUTSIDE OF THE MINECRAFT SERVER CONSOLE.
+- Enable RCON in your Minecraft server's `server.properties` file by enabling `enable-rcon` and setting a `rcon.port` and `rcon.password`. Be sure to reload the server to apply changes, and restart the bot if you had started it before enabling this feature.
+- You can now execute commands by typing exactly what you normally would type into the Minecraft server console into your Discord message channel. The bot will return an embed with the command's result and any output.
+
 You are free to expand upon and modify the software provided, as detailed in the License.
 
 # Settings
@@ -51,6 +59,9 @@ verifyInterval | number | The amount of time (in seconds) between verification p
 verificationTimeout | number | The timeout (in seconds) that the bot will wait until a ping is considered unsuccessful
 botChannel | string | The ID of the Discord channel that the bot should post its message to <br/> <details><summary>Expand description</summary><br/>Ensure that only the bot can send messages to this channnel. Other messages will break the bot.<br/><br/>To get the ID, enable Discord's Developer Mode, then right click channel > "Copy ID".</details>
 webhookChannel | string | The ID of the channel that the Minecraft server will send updates to
+commandChannel | string | The ID of the channel where commands are entered and output is returned
+rconPort | number | Port that the server RCON is listening on
+rconPassword | string | Password for RCON
 
 <br/>
 <br/>
